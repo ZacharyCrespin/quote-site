@@ -1,0 +1,15 @@
+@font-face {
+  font-family: Roboto;
+  src: url("Roboto-Regular.ttf");
+  font-display: swap;
+}
+body {
+  font-family: Roboto, Arial, sans-serif;
+}
+
+button {
+  font-family: inherit;
+}
+.addQuote textarea, .addQuote input {
+  font-family: inherit;
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Quotes</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <header>
+    <h1>My Quotes</h1>
+    <div id="user" style="display: none;">
+      <img id="img" src="">
+      <p id="name"></p>
+      <p id="email"></p>
+    </div>
+    <button id="login" style="display: none;">login</button>
+    <!-- <button id="logout" style="display: none;">logout</button> -->
+  </header>
+  <main>
+    <div class="addQuote">
+      <label for="addQuoteText">Quote</label><br>
+      <textarea id="addQuoteText"></textarea>
+      <br>
+      <button id="addQuoteBtn">add Quote</button>
+    </div>
+    <ol id="quotes">
+    </ol>
+  </main>
+  <script src="bundle.js"></script>
+</body>
+</html>
