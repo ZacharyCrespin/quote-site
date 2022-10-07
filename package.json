@@ -4,7 +4,7 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "npx webpack serve --mode=development",
+    "start": "webpack serve --mode=development",
     "dev": "webpack --mode=development",
     "build": "webpack --mode=production"
   },

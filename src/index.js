@@ -40,10 +40,11 @@ document.getElementById("login").addEventListener("click", () => {
 
 // Show Quotes
 function showQuotes(quotes) {
-  document.getElementById("quotes").innerHTML = '';
-  quotes.forEach(element => {
+  document.getElementById("quotes").innerHTML = "";
+
+  quotes.forEach((quote) => {
     var node = document.createElement("li");
-    var textnode=document.createTextNode(element);
+    var textnode = document.createTextNode(quote);
     node.appendChild(textnode);
     document.getElementById("quotes").appendChild(node);
   });
@@ -53,6 +54,9 @@ document.getElementById("addQuoteBtn").addEventListener("click", () => {
   let quote = document.getElementById("addQuoteText").value;
   const uid = JSON.parse(sessionStorage.getItem("user")).uid;
   let quotes = JSON.parse(sessionStorage.getItem("quotes"));
+  quotes = quotes.filter(function (el) {
+    return el != null;
+  });
   quotes.push(quote);
   const db = getDatabase();
   set(ref(db, uid + `/quotes`), quotes);
@@ -64,24 +68,22 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     // Setup the UI
     // document.getElementById("logout").style.display = "";
-    document.getElementById("user").style.display = "";
     sessionStorage.setItem("user", JSON.stringify(user));
-    document.getElementById("img").src = user.photoURL;
-    document.getElementById("name").innerText = user.displayName;
-    document.getElementById("email").innerText = user.email;
 
     // Get the quotes
     const dbRef = ref(getDatabase());
-    get(child(dbRef, user.uid + `/quotes`)).then((snapshot) => {
-      if (snapshot.exists()) {
-        sessionStorage.setItem("quotes", JSON.stringify(snapshot.val()));
-        showQuotes(snapshot.val());
-      } else {
-        console.log("No data available");
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
+    get(child(dbRef, user.uid + `/quotes`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          sessionStorage.setItem("quotes", JSON.stringify(snapshot.val()));
+          showQuotes(snapshot.val());
+        } else {
+          console.log("No data available");
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   } else {
     document.getElementById("login").style.display = "";
   }
