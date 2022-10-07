@@ -44,7 +44,13 @@ function showQuotes(quotes) {
 
   quotes.forEach((quote) => {
     var node = document.createElement("li");
-    var textnode = document.createTextNode(quote);
+
+    if (quote.author != undefined) {
+      var textnode = document.createTextNode(quote.quote + " - " + quote.author);
+    } else {
+      var textnode = document.createTextNode(quote.quote);
+    }
+
     node.appendChild(textnode);
     document.getElementById("quotes").appendChild(node);
   });
@@ -52,12 +58,22 @@ function showQuotes(quotes) {
 // Add Quote
 document.getElementById("addQuoteBtn").addEventListener("click", () => {
   let quote = document.getElementById("addQuoteText").value;
+  let author = document.getElementById("addQuoteAuthor").value;
   const uid = JSON.parse(sessionStorage.getItem("user")).uid;
   let quotes = JSON.parse(sessionStorage.getItem("quotes"));
   quotes = quotes.filter(function (el) {
     return el != null;
   });
-  quotes.push(quote);
+  if (author != undefined) {
+    quotes.push({
+      "quote": quote,
+      "author": author
+    });
+  } else {
+    quotes.push({
+      "quote": quote
+    });
+  }
   const db = getDatabase();
   set(ref(db, uid + `/quotes`), quotes);
   sessionStorage.setItem("quotes", JSON.stringify(quotes));

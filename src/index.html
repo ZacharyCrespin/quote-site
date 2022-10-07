@@ -15,8 +15,9 @@
   </header>
   <main>
     <div class="addQuote">
-      <label for="addQuoteText">Quote</label><br>
-      <textarea id="addQuoteText"></textarea>
+      <textarea id="addQuoteText" placeholder="Quote" maxlength="300" style="max-width: calc(100% - 1rem);"></textarea>
+      <br>
+      <input id="addQuoteAuthor" type="text" placeholder="Author (optional)">
       <br>
       <button id="addQuoteBtn">add Quote</button>
     </div>
