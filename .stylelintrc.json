@@ -1,0 +1,7 @@
+{
+  "extends": "stylelint-config-standard",
+  "ignoreFiles": "./dist/**",
+  "rules": {
+    "rule-empty-line-before": null
+  }
+}

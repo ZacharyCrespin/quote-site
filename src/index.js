@@ -2,8 +2,19 @@
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
-import { getDatabase, ref, child, get, set } from "firebase/database";
+import {
+  getAuth,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithRedirect,
+} from "firebase/auth";
+import {
+  getDatabase,
+  ref,
+  child,
+  get,
+  set,
+} from "firebase/database";
 import { getPerformance } from "firebase/performance";
 
 // Your web app's Firebase configuration
@@ -14,7 +25,7 @@ const firebaseConfig = {
   projectId: "quote-site-beta",
   storageBucket: "quote-site-beta.appspot.com",
   messagingSenderId: "536424659041",
-  appId: "1:536424659041:web:20be251b8a0056c69c1220"
+  appId: "1:536424659041:web:20be251b8a0056c69c1220",
 };
 
 // Initialize Firebase
@@ -41,43 +52,66 @@ document.getElementById("login").addEventListener("click", () => {
 // Show Quotes
 function showQuotes(quotes) {
   document.getElementById("quotes").innerHTML = "";
-
   quotes.forEach((quote) => {
-    var node = document.createElement("li");
-
-    if (quote.author != undefined) {
-      var textnode = document.createTextNode(quote.quote + " - " + quote.author);
+    const node = document.createElement("div");
+    if (quote.author !== undefined) {
+      node.innerHTML = `<p class="text">${quote.quote} - ${quote.author}</p>`;
     } else {
-      var textnode = document.createTextNode(quote.quote);
+      node.innerHTML = `<p class="text">${quote.quote}</p>`;
     }
-
-    node.appendChild(textnode);
+    node.className = "quote";
     document.getElementById("quotes").appendChild(node);
   });
 }
+
 // Add Quote
-document.getElementById("addQuoteBtn").addEventListener("click", () => {
-  let quote = document.getElementById("addQuoteText").value;
-  let author = document.getElementById("addQuoteAuthor").value;
-  const uid = JSON.parse(sessionStorage.getItem("user")).uid;
-  let quotes = JSON.parse(sessionStorage.getItem("quotes"));
-  quotes = quotes.filter(function (el) {
-    return el != null;
-  });
-  if (author != undefined) {
-    quotes.push({
-      "quote": quote,
-      "author": author
-    });
+document.getElementById("new").addEventListener("click", () => {
+  if (sessionStorage.getItem("addQuoteOpen") == "true") {
+    document.getElementsByClassName("addQuote")[0].style.display = "none";
+    sessionStorage.setItem("addQuoteOpen", false);
   } else {
-    quotes.push({
-      "quote": quote
-    });
+    document.getElementsByClassName("addQuote")[0].style.display = "";
+    sessionStorage.setItem("addQuoteOpen", true);
   }
-  const db = getDatabase();
-  set(ref(db, uid + `/quotes`), quotes);
-  sessionStorage.setItem("quotes", JSON.stringify(quotes));
-  showQuotes(quotes);
+});
+
+document.getElementById("addQuoteBtn").addEventListener("click", () => {
+  const quote = document.getElementById("addQuoteText").value;
+  if (quote !== "") {
+    let author = document.getElementById("addQuoteAuthor").value;
+    const uid = JSON.parse(sessionStorage.getItem("user")).uid;
+    let quotes = JSON.parse(sessionStorage.getItem("quotes"));
+    quotes = quotes.filter(function (el) {
+      return el !== null;
+    });
+    if (author !== "") {
+      quotes.push({
+        "quote": quote,
+        "author": author
+      });
+    } else {
+      quotes.push({
+        "quote": quote
+      });
+    }
+    const db = getDatabase();
+    set(ref(db, `${uid}/quotes`), quotes);
+    sessionStorage.setItem("quotes", JSON.stringify(quotes));
+    showQuotes(quotes);
+    document.getElementById("addQuoteText").value = "";
+    document.getElementById("addQuoteAuthor").value = "";
+  }
+});
+
+// Serch
+document.getElementById("search").addEventListener("click", () => {
+  if (sessionStorage.getItem("searchQuotesOpen") == "true") {
+    document.getElementsByClassName("searchQuotes")[0].style.display = "none";
+    sessionStorage.setItem("searchQuotesOpen", false);
+  } else {
+    document.getElementsByClassName("searchQuotes")[0].style.display = "";
+    sessionStorage.setItem("searchQuotesOpen", true);
+  }
 });
 
 onAuthStateChanged(auth, (user) => {
@@ -88,7 +122,7 @@ onAuthStateChanged(auth, (user) => {
 
     // Get the quotes
     const dbRef = ref(getDatabase());
-    get(child(dbRef, user.uid + `/quotes`))
+    get(child(dbRef, `${user.uid}/quotes`))
       .then((snapshot) => {
         if (snapshot.exists()) {
           sessionStorage.setItem("quotes", JSON.stringify(snapshot.val()));

@@ -1,26 +1,153 @@
 @font-face {
-  font-family: Roboto;
-  src: url("Roboto-Regular.ttf");
+  font-family: Graphik;
+  src: url("Graphik-Regular.woff2");
   font-display: swap;
 }
+
+@font-face {
+  font-family: Means;
+  src: url("Means-Regular.woff2");
+  font-display: swap;
+}
+
+:root {
+  --white: #fdf7f1;
+  --black: #241c15;
+  --light-border: #241c1525;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --white: #241c15;
+    --black: #fdf7f1;
+    --light-border: #fdf7f125;
+  }
+} */
+::selection {
+  background-color: #403d1b;
+  color: var(--white);
+}
+
 body {
-  font-family: Roboto, Arial, sans-serif;
+  font-family: Graphik, "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+  text-align: center;
+  background-color: var(--white);
+  color: var(--black);
 }
+
+h1 {
+  font-family: Means, Georgia, Times, "Times New Roman", serif;
+}
+
+header {
+  margin: 0 2rem;
+  padding: 0 2rem;
+  display: grid;
+  grid-template-columns: max-content auto;
+  border-bottom: 1px solid var(--light-border);
+}
+header h1 {
+  margin: 0;
+  padding: auto 0;
+}
+header .manage {
+  text-align: right;
+}
+
 button {
-  font-family: inherit;
+  font-size: 110%;
+  font-family: Means, Georgia, Times, "Times New Roman", serif;
+  padding: 0.5em 1em;
+  background-color: var(--white);
+  color: var(--black);
+  border: 2px solid var(--black);
+  border-radius: 2px;
+  transition: all ease 0.25s;
 }
-.addQuote {
+button:hover,
+button:focus-visible {
+  box-shadow: 0 0 0 2px var(--black);
+  background-color: var(--black);
+  color: var(--white);
+  border: 2px solid var(--white);
+}
+
+.box {
+  margin: auto;
   padding: 1rem;
-  background-color: grey;
-  border-radius: .5rem;
   max-width: 50ch;
 }
-.addQuote textarea, .addQuote input {
-  padding: .25em .5rem;
-  font-family: inherit;
-  width: calc(100% - 1rem);
+.box textarea,
+.box input {
+  margin: 0.5rem 0;
+  padding: 0.5em 1em;
+  font-family: Graphik, "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
+  width: calc(100% - 2rem);
+  background-color: var(--white);
+  color: var(--black);
+  border: 2px solid var(--black);
+  border-radius: 2px;
 }
-.addQuote button {
-  width: 12ch;
-  margin: 1rem calc((100% - 12ch) / 2) 0 calc((100% - 12ch) / 2);
+.box button {
+  margin: 1rem auto 0;
+}
+
+#quotes {
+  text-align: left;
+  margin: 1rem auto;
+  max-width: max-content;
+  counter-reset: quote-counter;
+}
+#quotes .quote {
+  counter-increment: quote-counter;
+  display: grid;
+  grid-template-columns: max-content auto;
+  border-bottom: 1px solid var(--light-border);
+}
+#quotes .quote:last-child {
+  border-bottom: none;
+}
+#quotes .quote::before {
+  content: counter(quote-counter);
+  margin: 0.25em 0;
+  padding: 0.25em;
+}
+#quotes .quote .text {
+  margin: 0.25em 0;
+  padding: 0.25em;
+}
+
+.manage .round {
+  width: 50px;
+  height: 50px;
+  border-radius: 100vmax;
+  margin: 0;
+  padding: 0;
+}
+.manage .round svg path {
+  fill: var(--black);
+}
+.manage .round:hover svg path,
+.manage .round:focus-visible svg path {
+  fill: var(--white);
+}
+.manage .round svg {
+  transform: scale(50%);
+  margin: 0;
+  padding: 0;
+}
+
+@media only screen and (max-width: 600px) {
+  .box {
+    width: calc(100% - 2rem);
+  }
+  #quotes {
+    width: 100%;
+  }
+  header {
+    grid-template-columns: 1fr;
+  }
+  header .manage {
+    text-align: center;
+  }
 }

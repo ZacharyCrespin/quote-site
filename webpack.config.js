@@ -12,7 +12,8 @@ module.exports = {
       patterns: [
         "src/index.html",
         "src/index.css",
-        "src/Roboto-Regular.ttf",
+        "src/Graphik-Regular.woff2",
+        "src/Means-Regular.woff2",
       ],
     }),
   ],
