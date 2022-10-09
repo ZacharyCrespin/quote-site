@@ -13,19 +13,24 @@
 :root {
   --white: #fdf7f1;
   --black: #241c15;
-  --light-border: #241c1525;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --white: #241c15;
-    --black: #fdf7f1;
-    --light-border: #fdf7f125;
-  }
-} */
 ::selection {
-  background-color: #403d1b;
+  background-color: #433528;
   color: var(--white);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--white);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--black);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #433528;
 }
 
 body {
@@ -44,7 +49,6 @@ header {
   padding: 0 2rem;
   display: grid;
   grid-template-columns: max-content auto;
-  border-bottom: 1px solid var(--light-border);
 }
 header h1 {
   margin: 0;
@@ -63,6 +67,9 @@ button {
   border: 2px solid var(--black);
   border-radius: 2px;
   transition: all ease 0.25s;
+}
+button:hover {
+  cursor: pointer;
 }
 button:hover,
 button:focus-visible {
@@ -83,6 +90,7 @@ button:focus-visible {
   padding: 0.5em 1em;
   font-family: Graphik, "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;
   width: calc(100% - 2rem);
+  resize: vertical;
   background-color: var(--white);
   color: var(--black);
   border: 2px solid var(--black);
@@ -101,8 +109,8 @@ button:focus-visible {
 #quotes .quote {
   counter-increment: quote-counter;
   display: grid;
-  grid-template-columns: max-content auto;
-  border-bottom: 1px solid var(--light-border);
+  grid-template-columns: max-content auto max-content max-content;
+  border-bottom: 1px solid #241c1525;
 }
 #quotes .quote:last-child {
   border-bottom: none;
@@ -115,6 +123,25 @@ button:focus-visible {
 #quotes .quote .text {
   margin: 0.25em 0;
   padding: 0.25em;
+}
+.action {
+  display: inline-flex;
+  align-self: center;
+  opacity: 0;
+  padding: 0 0.25em;
+}
+.action:hover {
+  cursor: pointer;
+}
+.quote:hover .action {
+  opacity: 100;
+}
+.action svg {
+  height: 1em;
+  width: 1em;
+  fill: currentcolor;
+  top: 0.125em;
+  position: relative;
 }
 
 .manage .round {
@@ -138,16 +165,22 @@ button:focus-visible {
 }
 
 @media only screen and (max-width: 600px) {
+  header {
+    grid-template-columns: 1fr;
+  }
+  header .manage {
+    width: 50px;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+  }
   .box {
     width: calc(100% - 2rem);
   }
   #quotes {
     width: 100%;
   }
-  header {
-    grid-template-columns: 1fr;
-  }
-  header .manage {
-    text-align: center;
+  .action {
+    opacity: 100;
   }
 }

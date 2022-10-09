@@ -1,7 +1,4 @@
-// Firebase
-// https://firebase.google.com/docs/web/setup#available-libraries
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import {
   getAuth,
   onAuthStateChanged,
@@ -15,9 +12,7 @@ import {
   get,
   set,
 } from "firebase/database";
-import { getPerformance } from "firebase/performance";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAVYFXkvxHP20zbqR0no1EEBpFmuNGKkwE",
   authDomain: "quote-site-beta.firebaseapp.com",
@@ -28,20 +23,8 @@ const firebaseConfig = {
   appId: "1:536424659041:web:20be251b8a0056c69c1220",
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Initialize Analytics and get a reference to the service
-const analytics = getAnalytics(app);
-
-// Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
-
-// Initialize Realtime Database and get a reference to the service
-const database = getDatabase(app);
-
-// Initialize Performance Monitoring and get a reference to the service
-const perf = getPerformance(app);
 
 // Auth
 document.getElementById("login").addEventListener("click", () => {
@@ -55,9 +38,15 @@ function showQuotes(quotes) {
   quotes.forEach((quote) => {
     const node = document.createElement("div");
     if (quote.author !== undefined) {
-      node.innerHTML = `<p class="text">${quote.quote} - ${quote.author}</p>`;
+      node.innerHTML = `<p class="text">${quote.quote} - ${quote.author}</p>
+      <div class="action edit"><svg xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0 0 48 48"><path fill="black" d="M9 39h2.2l22.15-22.15-2.2-2.2L9 36.8Zm30.7-24.3-6.4-6.4 2.1-2.1q.85-.85 2.1-.85t2.1.85l2.2 2.2q.85.85.85 2.1t-.85 2.1Zm-2.1 2.1L12.4 42H6v-6.4l25.2-25.2Zm-5.35-1.05-1.1-1.1 2.2 2.2Z"/></svg></div>
+      <div class="action delete"><svg xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0 0 48 48"><path fill="black" d="M13.05 42q-1.25 0-2.125-.875T10.05 39V10.5H8v-3h9.4V6h13.2v1.5H40v3h-2.05V39q0 1.2-.9 2.1-.9.9-2.1.9Zm21.9-31.5h-21.9V39h21.9Zm-16.6 24.2h3V14.75h-3Zm8.3 0h3V14.75h-3Zm-13.6-24.2V39Z"/></svg></div>
+      `;
     } else {
-      node.innerHTML = `<p class="text">${quote.quote}</p>`;
+      node.innerHTML = `<p class="text">${quote.quote}</p>
+      <div class="action edit"><svg xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0 0 48 48"><path fill="black" d="M9 39h2.2l22.15-22.15-2.2-2.2L9 36.8Zm30.7-24.3-6.4-6.4 2.1-2.1q.85-.85 2.1-.85t2.1.85l2.2 2.2q.85.85.85 2.1t-.85 2.1Zm-2.1 2.1L12.4 42H6v-6.4l25.2-25.2Zm-5.35-1.05-1.1-1.1 2.2 2.2Z"/></svg></div>
+      <div class="action delete"><svg xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0 0 48 48"><path fill="black" d="M13.05 42q-1.25 0-2.125-.875T10.05 39V10.5H8v-3h9.4V6h13.2v1.5H40v3h-2.05V39q0 1.2-.9 2.1-.9.9-2.1.9Zm21.9-31.5h-21.9V39h21.9Zm-16.6 24.2h3V14.75h-3Zm8.3 0h3V14.75h-3Zm-13.6-24.2V39Z"/></svg></div>
+      `;
     }
     node.className = "quote";
     document.getElementById("quotes").appendChild(node);
@@ -66,7 +55,7 @@ function showQuotes(quotes) {
 
 // Add Quote
 document.getElementById("new").addEventListener("click", () => {
-  if (sessionStorage.getItem("addQuoteOpen") == "true") {
+  if (sessionStorage.getItem("addQuoteOpen") === "true") {
     document.getElementsByClassName("addQuote")[0].style.display = "none";
     sessionStorage.setItem("addQuoteOpen", false);
   } else {
@@ -78,24 +67,22 @@ document.getElementById("new").addEventListener("click", () => {
 document.getElementById("addQuoteBtn").addEventListener("click", () => {
   const quote = document.getElementById("addQuoteText").value;
   if (quote !== "") {
-    let author = document.getElementById("addQuoteAuthor").value;
-    const uid = JSON.parse(sessionStorage.getItem("user")).uid;
+    const author = document.getElementById("addQuoteAuthor").value;
+    const user = JSON.parse(sessionStorage.getItem("user"));
     let quotes = JSON.parse(sessionStorage.getItem("quotes"));
-    quotes = quotes.filter(function (el) {
-      return el !== null;
-    });
+    quotes = quotes.filter((el) => el !== null);
     if (author !== "") {
       quotes.push({
-        "quote": quote,
-        "author": author
+        quote,
+        author,
       });
     } else {
       quotes.push({
-        "quote": quote
+        quote,
       });
     }
     const db = getDatabase();
-    set(ref(db, `${uid}/quotes`), quotes);
+    set(ref(db, `${user.uid}/quotes`), quotes);
     sessionStorage.setItem("quotes", JSON.stringify(quotes));
     showQuotes(quotes);
     document.getElementById("addQuoteText").value = "";
@@ -105,7 +92,7 @@ document.getElementById("addQuoteBtn").addEventListener("click", () => {
 
 // Serch
 document.getElementById("search").addEventListener("click", () => {
-  if (sessionStorage.getItem("searchQuotesOpen") == "true") {
+  if (sessionStorage.getItem("searchQuotesOpen") === "true") {
     document.getElementsByClassName("searchQuotes")[0].style.display = "none";
     sessionStorage.setItem("searchQuotesOpen", false);
   } else {
@@ -113,6 +100,13 @@ document.getElementById("search").addEventListener("click", () => {
     sessionStorage.setItem("searchQuotesOpen", true);
   }
 });
+
+// Delete
+// document.querySelectorAll("div.delete").forEach((element) => {
+//   element.addEventListener("click", () => {
+//     console.log("test");
+//   });
+// });
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
@@ -128,7 +122,7 @@ onAuthStateChanged(auth, (user) => {
           sessionStorage.setItem("quotes", JSON.stringify(snapshot.val()));
           showQuotes(snapshot.val());
         } else {
-          console.log("No data available");
+          // New user, launch a welcome thing? Maby
         }
       })
       .catch((error) => {
