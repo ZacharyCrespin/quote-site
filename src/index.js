@@ -102,11 +102,7 @@ document.getElementById("search").addEventListener("click", () => {
 });
 
 // Delete
-// document.querySelectorAll("div.delete").forEach((element) => {
-//   element.addEventListener("click", () => {
-//     console.log("test");
-//   });
-// });
+
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
@@ -122,7 +118,9 @@ onAuthStateChanged(auth, (user) => {
           sessionStorage.setItem("quotes", JSON.stringify(snapshot.val()));
           showQuotes(snapshot.val());
         } else {
-          // New user, launch a welcome thing? Maby
+          let quotes = [{"quote": "this is your first quote", "author": "it has an author"}];
+          set(ref(db, `${user.uid}/quotes`), quotes);
+          sessionStorage.setItem("quotes", JSON.stringify(quotes));
         }
       })
       .catch((error) => {
