@@ -118,7 +118,7 @@ onAuthStateChanged(auth, (user) => {
           sessionStorage.setItem("quotes", JSON.stringify(snapshot.val()));
           showQuotes(snapshot.val());
         } else {
-          let quotes = [{"quote": "this is your first quote", "author": "it has an author"}];
+          let quotes = [{"quote": "This is your first quote.", "author": "It has an author!"}];
           set(ref(db, `${user.uid}/quotes`), quotes);
           sessionStorage.setItem("quotes", JSON.stringify(quotes));
         }
