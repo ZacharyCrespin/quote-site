@@ -1,9 +1,8 @@
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
-  onAuthStateChanged,
+  signInWithPopup,
   GoogleAuthProvider,
-  signInWithRedirect,
 } from "firebase/auth";
 import {
   getDatabase,
@@ -24,12 +23,28 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 
 // Auth
 document.getElementById("login").addEventListener("click", () => {
-  const provider = new GoogleAuthProvider();
-  signInWithRedirect(auth, provider);
+  const auth = getAuth();
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      // ...
+    }).catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+    });
 });
 
 // Show Quotes
