@@ -56,10 +56,10 @@ function showQuotes(quotes) {
 // Add Quote
 document.getElementById("new").addEventListener("click", () => {
   if (sessionStorage.getItem("addQuoteOpen") === "true") {
-    document.getElementsByClassName("addQuote")[0].style.display = "none";
+    document.getElementById("addQuote").style.display = "none";
     sessionStorage.setItem("addQuoteOpen", false);
   } else {
-    document.getElementsByClassName("addQuote")[0].style.display = "";
+    document.getElementById("addQuote").style.display = "";
     sessionStorage.setItem("addQuoteOpen", true);
   }
 });
@@ -93,10 +93,10 @@ document.getElementById("addQuoteBtn").addEventListener("click", () => {
 // Serch
 document.getElementById("search").addEventListener("click", () => {
   if (sessionStorage.getItem("searchQuotesOpen") === "true") {
-    document.getElementsByClassName("searchQuotes")[0].style.display = "none";
+    document.getElementById("searchQuotes").style.display = "none";
     sessionStorage.setItem("searchQuotesOpen", false);
   } else {
-    document.getElementsByClassName("searchQuotes")[0].style.display = "";
+    document.getElementById("searchQuotes").style.display = "";
     sessionStorage.setItem("searchQuotesOpen", true);
   }
 });
