@@ -115,7 +115,12 @@ button:focus-visible {
 #quotes .quote {
   display: grid;
   grid-template-columns: auto max-content max-content;
+  padding: 0.5em 0;
   border-bottom: 1px solid #241c1525;
+}
+#quotes .quote .text {
+  margin: 0;
+  padding: 0;
 }
 #quotes .quote:last-child {
   border-bottom: none;
