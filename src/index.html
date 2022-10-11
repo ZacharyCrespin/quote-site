@@ -20,16 +20,20 @@
     </div>
   </header>
   <main>
+    <div id="addQuote" class="box" style="display: none;">
+      <div class="content">
+        <textarea id="addQuoteText" placeholder="Quote" rows="2" maxlength="300" style="max-width: calc(100% - 2rem);"></textarea>
+        <input id="addQuoteAuthor" type="text" placeholder="Author (optional)">
+        <button id="addQuoteBtn">add Quote</button>
+      </div>
+    </div>
+    <div id="searchQuotes" class="box" style="display: none;">
+      <div class="content">
+        <input id="searchBox" type="search" placeholder="Search (jk i haven't programed that)">
+      </div>
+    </div>
     <button id="login" style="display: none;">login</button>
     <!-- <button id="logout" style="display: none;">logout</button> -->
-    <div class="box addQuote" style="display: none;">
-      <textarea id="addQuoteText" placeholder="Quote" rows="2" maxlength="300" style="max-width: calc(100% - 1rem);"></textarea>
-      <input id="addQuoteAuthor" type="text" placeholder="Author (optional)">
-      <button id="addQuoteBtn">add Quote</button>
-    </div>
-    <div class="box searchQuotes" style="display: none;">
-      <input id="searchBox" type="search" placeholder="Search (jk i haven't programed that)">
-    </div>
     <div id="quotes"></div>
   </main>
   <script src="bundle.js"></script>
