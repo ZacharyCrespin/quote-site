@@ -28,21 +28,21 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getDatabase();
 
-// Auth
-// Open new login box
-document.getElementById("loginOpen").addEventListener("click", () => {
+// Open login box
+document.getElementById("openLogin").addEventListener("click", () => {
   document.getElementById("login").style.display = "block";
 });
-// Close box
+// Close the box
 document.getElementById("loginClose").addEventListener("click", () => {
   document.getElementById("login").style.display = "none";
 });
-
+// sign in with google
 document.getElementById("googleLogin").addEventListener("click", () => {
   signInWithPopup(auth, provider).then(() => {
     window.location.reload();
   });
 });
+// sign in with email
 const email = document.getElementById("email").value
 const password = document.getElementById("password").value
 document.getElementById("loginBtn").addEventListener("click", () => {
@@ -50,6 +50,7 @@ document.getElementById("loginBtn").addEventListener("click", () => {
     window.location.reload();
   });
 });
+// signOut
 document.getElementById("logout").addEventListener("click", () => {
   auth.signOut();
 });
