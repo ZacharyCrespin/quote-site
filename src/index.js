@@ -43,10 +43,10 @@ document.getElementById("googleLogin").addEventListener("click", () => {
   });
 });
 // sign in with email
-const email = document.getElementById("email").value
-const password = document.getElementById("password").value
+const email = document.getElementById("email")
+const password = document.getElementById("password")
 document.getElementById("loginBtn").addEventListener("click", () => {
-  signInWithEmailAndPassword(auth, email, password).then(() => {
+  signInWithEmailAndPassword(auth, email.value, password.value).then(() => {
     window.location.reload();
   });
 });
@@ -116,6 +116,7 @@ document.getElementById("addQuoteBtn").addEventListener("click", () => {
 onAuthStateChanged(auth, (user) => {
   if (user) {
     document.getElementById("logout").style.display = "";
+    document.getElementById("openLogin").style.display = "none";
 
     // Get the quotes
     const dbRef = ref(getDatabase());
@@ -131,6 +132,8 @@ onAuthStateChanged(auth, (user) => {
         }
       });
   } else {
+    document.getElementById("quotes").innerHTML = "";
     document.getElementById("openLogin").style.display = "";
+    document.getElementById("logout").style.display = "none";
   }
 });
