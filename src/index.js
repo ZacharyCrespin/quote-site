@@ -33,6 +33,9 @@ document.getElementById("login").addEventListener("click", () => {
     window.location.reload();
   });
 });
+document.getElementById("logout").addEventListener("click", () => {
+  auth.signOut();
+});
 
 // Show Quotes
 function showQuotes(quotes) {
@@ -57,19 +60,21 @@ function showQuotes(quotes) {
   });
 }
 
-// Add Quote
+// Open new quote box
 document.getElementById("new").addEventListener("click", () => {
   document.getElementById("addQuote").style.display = "block";
 });
+// Close box
 document.getElementById("addQuoteClose").addEventListener("click", () => {
   document.getElementById("addQuote").style.display = "none";
 });
 
+// Add Quote
 document.getElementById("addQuoteBtn").addEventListener("click", () => {
   const quote = document.getElementById("addQuoteText").value;
   if (quote !== "") {
     const author = document.getElementById("addQuoteAuthor").value;
-    const user = JSON.parse(sessionStorage.getItem("user"));
+    const user = auth.currentUser;
     let quotes = JSON.parse(sessionStorage.getItem("quotes"));
     quotes = quotes.filter((el) => el !== null);
     if (author !== "") {
@@ -92,9 +97,7 @@ document.getElementById("addQuoteBtn").addEventListener("click", () => {
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    // Setup the UI
-    // document.getElementById("logout").style.display = "";
-    sessionStorage.setItem("user", JSON.stringify(user));
+    document.getElementById("logout").style.display = "";
 
     // Get the quotes
     const dbRef = ref(getDatabase());
@@ -108,9 +111,6 @@ onAuthStateChanged(auth, (user) => {
           set(ref(db, `${user.uid}/quotes`), quotes);
           sessionStorage.setItem("quotes", JSON.stringify(quotes));
         }
-      })
-      .catch((error) => {
-        console.error(error);
       });
   } else {
     document.getElementById("login").style.display = "";
