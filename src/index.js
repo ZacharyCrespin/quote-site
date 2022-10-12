@@ -4,6 +4,7 @@ import {
   onAuthStateChanged,
   signInWithPopup,
   signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   GoogleAuthProvider,
 } from "firebase/auth";
 import {
@@ -48,6 +49,12 @@ const password = document.getElementById("password")
 document.getElementById("loginBtn").addEventListener("click", () => {
   signInWithEmailAndPassword(auth, email.value, password.value).then(() => {
     window.location.reload();
+  })
+  // if sign in fails try to sign up
+  .catch(() => {
+    createUserWithEmailAndPassword(auth, email.value, password.value).then(() => {
+      window.location.reload();
+    })
   });
 });
 // signOut
@@ -126,7 +133,7 @@ onAuthStateChanged(auth, (user) => {
           sessionStorage.setItem("quotes", JSON.stringify(snapshot.val()));
           showQuotes(snapshot.val());
         } else {
-          const quotes = [{ quote: "This is your first quote.", author: "It has an author!" }];
+          const quotes = [];
           set(ref(db, `${user.uid}/quotes`), quotes);
           sessionStorage.setItem("quotes", JSON.stringify(quotes));
         }
