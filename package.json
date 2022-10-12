@@ -7,7 +7,7 @@
     "start": "webpack serve --mode=development",
     "dev": "webpack --mode=development",
     "build": "webpack --mode=production",
-    "lint": "npx stylelint **/*.css && npx eslint **/*.js"
+    "lint": "stylelint src/**/*.css && eslint src/**/*.js"
   },
   "author": "Zachary Crespin",
   "license": "MIT",

@@ -22,34 +22,22 @@ const firebaseConfig = {
   messagingSenderId: "536424659041",
   appId: "1:536424659041:web:20be251b8a0056c69c1220",
 };
-
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+const db = getDatabase();
 
 // Auth
 document.getElementById("login").addEventListener("click", () => {
-  const auth = getAuth();
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      // The signed-in user info.
-      const user = result.user;
-      // ...
-    }).catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.customData.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      // ...
-    });
+  signInWithPopup(auth, provider).then(() => {
+    window.location.reload();
+  });
 });
 
 // Show Quotes
 function showQuotes(quotes) {
+  // eslint-disable-next-line no-param-reassign
+  quotes = quotes.reverse();
   document.getElementById("quotes").innerHTML = "";
   quotes.forEach((quote) => {
     const node = document.createElement("div");
@@ -71,13 +59,10 @@ function showQuotes(quotes) {
 
 // Add Quote
 document.getElementById("new").addEventListener("click", () => {
-  if (sessionStorage.getItem("addQuoteOpen") === "true") {
-    document.getElementById("addQuote").style.display = "none";
-    sessionStorage.setItem("addQuoteOpen", false);
-  } else {
-    document.getElementById("addQuote").style.display = "";
-    sessionStorage.setItem("addQuoteOpen", true);
-  }
+  document.getElementById("addQuote").style.display = "block";
+});
+document.getElementById("addQuoteClose").addEventListener("click", () => {
+  document.getElementById("addQuote").style.display = "none";
 });
 
 document.getElementById("addQuoteBtn").addEventListener("click", () => {
@@ -97,7 +82,6 @@ document.getElementById("addQuoteBtn").addEventListener("click", () => {
         quote,
       });
     }
-    const db = getDatabase();
     set(ref(db, `${user.uid}/quotes`), quotes);
     sessionStorage.setItem("quotes", JSON.stringify(quotes));
     showQuotes(quotes);
@@ -105,20 +89,6 @@ document.getElementById("addQuoteBtn").addEventListener("click", () => {
     document.getElementById("addQuoteAuthor").value = "";
   }
 });
-
-// Serch
-document.getElementById("search").addEventListener("click", () => {
-  if (sessionStorage.getItem("searchQuotesOpen") === "true") {
-    document.getElementById("searchQuotes").style.display = "none";
-    sessionStorage.setItem("searchQuotesOpen", false);
-  } else {
-    document.getElementById("searchQuotes").style.display = "";
-    sessionStorage.setItem("searchQuotesOpen", true);
-  }
-});
-
-// Delete
-
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
@@ -134,7 +104,7 @@ onAuthStateChanged(auth, (user) => {
           sessionStorage.setItem("quotes", JSON.stringify(snapshot.val()));
           showQuotes(snapshot.val());
         } else {
-          let quotes = [{"quote": "This is your first quote.", "author": "It has an author!"}];
+          const quotes = [{ quote: "This is your first quote.", author: "It has an author!" }];
           set(ref(db, `${user.uid}/quotes`), quotes);
           sessionStorage.setItem("quotes", JSON.stringify(quotes));
         }
