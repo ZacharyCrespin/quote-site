@@ -27,10 +27,17 @@
     </div>
     <div id="login" class="box">
       <div class="content">
-        <input type="email" name="email" id="email" placeholder="email">
-        <input type="password" name="password" id="password" placeholder="password">
-        <button id="googleLogin">Log In With Google</button>
-        <button id="loginBtn">Sign In</button>
+        <div id="step1">
+          <h2>log in with</h2>
+          <button id="emailLogin">Email</button>
+          <button id="googleLogin">Google</button>
+        </div>
+        <div id="emailDiv" style="display: none;">
+          <input type="email" name="email" id="email" placeholder="email">
+          <input type="password" name="password" id="password" placeholder="password">
+          <button id="loginBtn">Sign In</button>
+          <button id="signUpBtn">Sign Up</button>
+        </div>
         <button id="loginClose">Close</button>
       </div>
     </div>

@@ -37,6 +37,12 @@ document.getElementById("openLogin").addEventListener("click", () => {
 document.getElementById("loginClose").addEventListener("click", () => {
   document.getElementById("login").style.display = "none";
 });
+// open email box
+document.getElementById("emailLogin").addEventListener("click", () => {
+  document.getElementById("step1").style.display = "none";
+  document.getElementById("emailDiv").style.display = "block";
+});
+
 // sign in with google
 document.getElementById("googleLogin").addEventListener("click", () => {
   signInWithPopup(auth, provider).then(() => {
@@ -49,13 +55,13 @@ const password = document.getElementById("password")
 document.getElementById("loginBtn").addEventListener("click", () => {
   signInWithEmailAndPassword(auth, email.value, password.value).then(() => {
     window.location.reload();
-  })
-  // if sign in fails try to sign up
-  .catch(() => {
-    createUserWithEmailAndPassword(auth, email.value, password.value).then(() => {
-      window.location.reload();
-    })
   });
+});
+// sign up with email
+document.getElementById("signUpBtn").addEventListener("click", () => {
+  createUserWithEmailAndPassword(auth, email.value, password.value).then(() => {
+    window.location.reload();
+  })
 });
 // signOut
 document.getElementById("logout").addEventListener("click", () => {
