@@ -36,13 +36,14 @@ document.getElementById("openLogin").addEventListener("click", () => {
 // Close the box
 document.getElementById("loginClose").addEventListener("click", () => {
   document.getElementById("login").style.display = "none";
+  document.getElementById("step1").style.display = "block";
+  document.getElementById("emailDiv").style.display = "none";
 });
 // open email box
 document.getElementById("emailLogin").addEventListener("click", () => {
   document.getElementById("step1").style.display = "none";
   document.getElementById("emailDiv").style.display = "block";
 });
-
 // sign in with google
 document.getElementById("googleLogin").addEventListener("click", () => {
   signInWithPopup(auth, provider).then(() => {
