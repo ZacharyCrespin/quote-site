@@ -3,6 +3,7 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithPopup,
+  signInWithEmailAndPassword,
   GoogleAuthProvider,
 } from "firebase/auth";
 import {
@@ -28,8 +29,24 @@ const provider = new GoogleAuthProvider();
 const db = getDatabase();
 
 // Auth
-document.getElementById("login").addEventListener("click", () => {
+// Open new login box
+document.getElementById("loginOpen").addEventListener("click", () => {
+  document.getElementById("login").style.display = "block";
+});
+// Close box
+document.getElementById("loginClose").addEventListener("click", () => {
+  document.getElementById("login").style.display = "none";
+});
+
+document.getElementById("googleLogin").addEventListener("click", () => {
   signInWithPopup(auth, provider).then(() => {
+    window.location.reload();
+  });
+});
+const email = document.getElementById("email").value
+const password = document.getElementById("password").value
+document.getElementById("loginBtn").addEventListener("click", () => {
+  signInWithEmailAndPassword(auth, email, password).then(() => {
     window.location.reload();
   });
 });
